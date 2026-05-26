@@ -1,11 +1,18 @@
-package model.dao;
+package com.template;
 
 import model.dto.ViagemDTO;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+// imports do logger
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class ViagemDAO {
+
+    // logger adicionado
+    private static final Logger logger = Logger.getLogger(ViagemDAO.class.getName());
 
     public void cadastrar(ViagemDTO viagem) {
         String sql = "INSERT INTO viagem (destino, data_ida, data_volta, preco, observacoes) VALUES (?, ?, ?, ?, ?)";
@@ -23,7 +30,7 @@ public class ViagemDAO {
             System.out.println(">> Sucesso: Viagem cadastrada!");
 
         } catch (SQLException e) {
-            System.out.println(">> Erro ao cadastrar: " + e.getMessage());
+            logger.log(Level.SEVERE, "Erro ao cadastrar viagem", e);
         }
     }
 
@@ -44,7 +51,7 @@ public class ViagemDAO {
             System.out.println(">> Sucesso: Viagem alterada!");
 
         } catch (SQLException e) {
-            System.out.println(">> Erro ao alterar: " + e.getMessage());
+            logger.log(Level.SEVERE, "Erro ao alterar viagem", e);
         }
     }
 
@@ -52,9 +59,9 @@ public class ViagemDAO {
         String sql = "SELECT * FROM viagem";
         List<ViagemDTO> lista = new ArrayList<>();
 
-        try (Connection conn = new Conexao().obterConexao(); //Abre a conexão com o banco de dados
-             PreparedStatement ps = conn.prepareStatement(sql); //Prepara o comando SQL para ser enviado
-             ResultSet rs = ps.executeQuery()) { //Executa a consulta e guarda os resultados vindos do banco
+        try (Connection conn = new Conexao().obterConexao();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 ViagemDTO v = new ViagemDTO();
@@ -64,24 +71,29 @@ public class ViagemDAO {
                 v.setDataVolta(rs.getDate("data_volta"));
                 v.setPreco(rs.getDouble("preco"));
                 v.setObservacoes(rs.getString("observacoes"));
-                lista.add(v);    //coloca o objeto na lista
+                lista.add(v);
             }
+
         } catch (SQLException e) {
-            System.out.println(">> Erro ao listar: " + e.getMessage());
+            logger.log(Level.SEVERE, "Erro ao listar viagens", e);
         }
-        return lista;   //devolve a lista com todas as viagens encontradas
+
+        return lista;
     }
 
     public void excluir(int id) {
         String sql = "DELETE FROM viagem WHERE id = ?";
+
         try (Connection conn = new Conexao().obterConexao();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);  //define o valor do parametro pelo id
-            ps.executeUpdate(); //executa o comando q altera a tabela
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+
             System.out.println(">> Sucesso: Viagem excluida!");
 
         } catch (SQLException e) {
-            System.out.println(">> Erro ao excluir: " + e.getMessage());
+            logger.log(Level.SEVERE, "Erro ao excluir viagem", e);
         }
     }
-}
+}}

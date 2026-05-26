@@ -7,16 +7,26 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.MainController">
     <children>
-      <Pane prefHeight="400.0" prefWidth="600.0">
+      <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #9abad9;">
          <children>
-            <Button fx:id="btnExcluir" layoutX="360.0" layoutY="155.0" mnemonicParsing="false" text="Excluir" />
-            <Button fx:id="btnAlterar" layoutX="275.0" layoutY="155.0" mnemonicParsing="false" text="Alterar" />
-              <Button fx:id="btnCadastrar" layoutX="177.0" layoutY="155.0" mnemonicParsing="false" text="Cadastrar" />
+            <Button fx:id="btnExcluir" layoutX="360.0" layoutY="155.0" mnemonicParsing="false" onAction="#btnExcluirAction" style="-fx-background-color: #bf6d3d;" text="Excluir" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+            <Button fx:id="btnAlterar" layoutX="275.0" layoutY="155.0" mnemonicParsing="false" onAction="#btnAlterarAction" style="-fx-background-color: #bf6d3d;" text="Alterar" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
+              <Button fx:id="btnCadastrar" layoutX="177.0" layoutY="155.0" mnemonicParsing="false" onAction="#btnCadastrarAction" style="-fx-background-color: #bf6d3d;" text="Cadastrar" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Button>
             <Label layoutX="82.0" layoutY="20.0" text="Destino" />
-            <Label layoutX="324.0" layoutY="23.0" text="Preço" />
+            <Label layoutX="329.0" layoutY="23.0" text="Preço" />
             <Label layoutX="79.0" layoutY="90.0" prefHeight="17.0" prefWidth="99.0" text="Data de ida" />
             <Label layoutX="165.0" layoutY="90.0" text="Data de volta" />
             <TextField fx:id="txtDestino" layoutX="80.0" layoutY="39.0" prefHeight="25.0" prefWidth="149.0" />
