@@ -1,20 +1,16 @@
 package com.template;
 
-import model.dto.ViagemDTO;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
-
-// imports do logger
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ViagemDAO {
 
-    // logger adicionado
     private static final Logger logger = Logger.getLogger(ViagemDAO.class.getName());
 
     public void cadastrar(ViagemDTO viagem) {
+
         String sql = "INSERT INTO viagem (destino, data_ida, data_volta, preco, observacoes) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = new Conexao().obterConexao();
@@ -27,6 +23,7 @@ public class ViagemDAO {
             ps.setString(5, viagem.getObservacoes());
 
             ps.executeUpdate();
+
             System.out.println(">> Sucesso: Viagem cadastrada!");
 
         } catch (SQLException e) {
@@ -35,6 +32,7 @@ public class ViagemDAO {
     }
 
     public void alterar(ViagemDTO viagem) {
+
         String sql = "UPDATE viagem SET destino = ?, data_ida = ?, data_volta = ?, preco = ?, observacoes = ? WHERE id = ?";
 
         try (Connection conn = new Conexao().obterConexao();
@@ -48,6 +46,7 @@ public class ViagemDAO {
             ps.setInt(6, viagem.getId());
 
             ps.executeUpdate();
+
             System.out.println(">> Sucesso: Viagem alterada!");
 
         } catch (SQLException e) {
@@ -55,23 +54,27 @@ public class ViagemDAO {
         }
     }
 
-    public List<ViagemDTO> listarTodos() {
+    public ArrayList<ViagemDTO> listarViagem() {
+
         String sql = "SELECT * FROM viagem";
-        List<ViagemDTO> lista = new ArrayList<>();
+        ArrayList<ViagemDTO> lista = new ArrayList<>();
 
         try (Connection conn = new Conexao().obterConexao();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                ViagemDTO v = new ViagemDTO();
-                v.setId(rs.getInt("id"));
-                v.setDestino(rs.getString("destino"));
-                v.setDataIda(rs.getDate("data_ida"));
-                v.setDataVolta(rs.getDate("data_volta"));
-                v.setPreco(rs.getDouble("preco"));
-                v.setObservacoes(rs.getString("observacoes"));
-                lista.add(v);
+
+                ViagemDTO viagem = new ViagemDTO();
+
+                viagem.setId(rs.getInt("id"));
+                viagem.setDestino(rs.getString("destino"));
+                viagem.setDataIda(rs.getDate("data_ida"));
+                viagem.setDataVolta(rs.getDate("data_volta"));
+                viagem.setPreco(rs.getDouble("preco"));
+                viagem.setObservacoes(rs.getString("observacoes"));
+
+                lista.add(viagem);
             }
 
         } catch (SQLException e) {
@@ -82,18 +85,20 @@ public class ViagemDAO {
     }
 
     public void excluir(int id) {
+
         String sql = "DELETE FROM viagem WHERE id = ?";
 
         try (Connection conn = new Conexao().obterConexao();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
+
             ps.executeUpdate();
 
-            System.out.println(">> Sucesso: Viagem excluida!");
+            System.out.println(">> Sucesso: Viagem excluída!");
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao excluir viagem", e);
         }
     }
-}}
+}

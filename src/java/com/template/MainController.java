@@ -1,34 +1,159 @@
 package com.template;
 
+import java.util.ArrayList;
+import java.util.Date;
+
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TableView;
 import javafx.scene.control.Button;
-
-import java.awt.event.ActionEvent;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class MainController {
 
     @FXML private Button btnCadastrar;
     @FXML private Button btnAlterar;
     @FXML private Button btnExcluir;
+    @FXML private Button btnLimpar;
+
     @FXML private TextField txtDestino;
     @FXML private TextField txtPreco;
-    @FXML private TextField txtDataVolta;
-    @FXML private TextField txtDataIda;
     @FXML private TextField txtObservacoes;
-    @FXML private TableView <ViagemDTO> tblViagem;
-    @FXML private TableColumn <ViagemDTO, Integer> colID;
-    @FXML private TableColumn <ViagemDTO, Integer> colDestino;
-    @FXML private TableColumn <ViagemDTO, Integer> colPreco;
-    @FXML private TableColumn <ViagemDTO, Integer> colDataIda;
-    @FXML private TableColumn <ViagemDTO, Integer> colDataVolta;
-    @FXML private TableColumn <ViagemDTO, Integer> colObservacoes;
 
-    // fazer o código dos botões
+    @FXML private DatePicker dtpDataIda;
+    @FXML private DatePicker dtpDataVolta;
+
+    @FXML private TableView<ViagemDTO> tblViagem;
+
+    @FXML private TableColumn<ViagemDTO, Integer> colID;
+    @FXML private TableColumn<ViagemDTO, String> colDestino;
+    @FXML private TableColumn<ViagemDTO, Double> colPreco;
+    @FXML private TableColumn<ViagemDTO, Date> colDataIda;
+    @FXML private TableColumn<ViagemDTO, Date> colDataVolta;
+    @FXML private TableColumn<ViagemDTO, String> colObservacoes;
 
     @FXML
-    private void initializa() { System.out.println("FXML loaded sucess")}
+    private void btnCadastrarAction(ActionEvent event) {
+
+        ViagemDTO viagem = new ViagemDTO();
+
+        viagem.setDestino(txtDestino.getText());
+        viagem.setPreco(Double.parseDouble(txtPreco.getText()));
+        viagem.setDataIda(java.sql.Date.valueOf(dtpDataIda.getValue()));
+        viagem.setDataVolta(java.sql.Date.valueOf(dtpDataVolta.getValue()));
+        viagem.setObservacoes(txtObservacoes.getText());
+
+        ViagemDAO dao = new ViagemDAO();
+        dao.cadastrar(viagem);
+
+        carregarViagem();
+        limparCampos();
+    }
+
+    @FXML
+    private void btnAlterarAction(ActionEvent event) {
+
+        ViagemDTO viagem = tblViagem.getSelectionModel().getSelectedItem();
+
+        if (viagem != null) {
+
+            viagem.setDestino(txtDestino.getText());
+            viagem.setPreco(Double.parseDouble(txtPreco.getText()));
+            viagem.setDataIda(java.sql.Date.valueOf(dtpDataIda.getValue()));
+            viagem.setDataVolta(java.sql.Date.valueOf(dtpDataVolta.getValue()));
+            viagem.setObservacoes(txtObservacoes.getText());
+
+            ViagemDAO dao = new ViagemDAO();
+            dao.alterar(viagem);
+
+            carregarViagem();
+            limparCampos();
+        }
+    }
+
+    @FXML
+    private void btnExcluirAction(ActionEvent event) {
+
+        ViagemDTO viagem = tblViagem.getSelectionModel().getSelectedItem();
+
+        if (viagem != null) {
+
+            ViagemDAO dao = new ViagemDAO();
+            dao.excluir(viagem.getId());
+
+            carregarViagem();
+            limparCampos();
+        }
+    }
+
+    @FXML
+    private void btnLimparAction(ActionEvent event) {
+        limparCampos();
+    }
+
+    private void limparCampos() {
+        txtDestino.clear();
+        txtPreco.clear();
+        dtpDataIda.setValue(null);
+        dtpDataVolta.setValue(null);
+        txtObservacoes.clear();
+    }
+
+    @FXML
+    private void selecionarViagem() {
+
+        ViagemDTO viagem = tblViagem.getSelectionModel().getSelectedItem();
+
+        if (viagem != null) {
+
+            txtDestino.setText(viagem.getDestino());
+            txtPreco.setText(String.valueOf(viagem.getPreco()));
+            txtObservacoes.setText(viagem.getObservacoes());
+
+            dtpDataIda.setValue(
+                    new java.sql.Date(viagem.getDataIda().getTime()).toLocalDate()
+            );
+
+            dtpDataVolta.setValue(
+                    new java.sql.Date(viagem.getDataVolta().getTime()).toLocalDate()
+            );
+        }
+    }
+    @FXML
+    private void carregarViagem() {
+
+        ViagemDTO viagemDTO = tblViagem.getSelectionModel().getSelectedItem();
+
+        if (viagemDTO != null) {
+
+            txtDestino.setText(viagemDTO.getDestino());
+            txtPreco.setText(String.valueOf(viagemDTO.getPreco()));
+            txtObservacoes.setText(viagemDTO.getObservacoes());
+
+            dtpDataIda.setValue(
+                    new java.sql.Date(viagemDTO.getDataIda().getTime()).toLocalDate()
+            );
+
+            dtpDataVolta.setValue(
+                    new java.sql.Date(viagemDTO.getDataVolta().getTime()).toLocalDate()
+            );
+        }
+    }
+
+    @FXML
+    private void initialize() {
+
+        colID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colDestino.setCellValueFactory(new PropertyValueFactory<>("destino"));
+        colPreco.setCellValueFactory(new PropertyValueFactory<>("preco"));
+        colDataIda.setCellValueFactory(new PropertyValueFactory<>("dataIda"));
+        colDataVolta.setCellValueFactory(new PropertyValueFactory<>("dataVolta"));
+        colObservacoes.setCellValueFactory(new PropertyValueFactory<>("observacoes"));
+
+        carregarViagem();
+    }
 }
