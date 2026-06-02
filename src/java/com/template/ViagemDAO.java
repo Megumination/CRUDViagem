@@ -86,6 +86,7 @@ public class ViagemDAO {
 
     public void excluir(int id) {
 
+        System.out.println("Tentando excluir ID: " + id);
         String sql = "DELETE FROM viagem WHERE id = ?";
 
         try (Connection conn = new Conexao().obterConexao();

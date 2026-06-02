@@ -31,7 +31,7 @@
             <Label layoutX="60.0" layoutY="131.0" prefHeight="17.0" prefWidth="99.0" text="Data de ida" />
             <Label layoutX="145.0" layoutY="131.0" text="Data de volta" />
             <TextField fx:id="txtDestino" layoutX="60.0" layoutY="93.0" prefHeight="25.0" prefWidth="155.0" style="-fx-background-color: #ffffff;" />
-            <TableView fx:id="tblViagem" layoutX="60.0" layoutY="200.0" onMouseClicked="#carregarViagem" prefHeight="200.0" prefWidth="465.0" style="-fx-background-color: #d6ebff;">
+            <TableView fx:id="tblViagem" layoutX="60.0" layoutY="200.0" onMouseClicked="#carregarCampos" prefHeight="200.0" prefWidth="465.0" style="-fx-background-color: #d6ebff;">
               <columns>
                 <TableColumn fx:id="colID" prefWidth="41.0" text="ID" />
                 <TableColumn fx:id="colDestino" prefWidth="83.0" text="Destino" />
