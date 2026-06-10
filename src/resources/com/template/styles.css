@@ -1,0 +1,21 @@
+/* Define cores padrão para o projeto */
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Deixa os botões com cantos arredondados e cor azul */
+.button {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+/* Efeito quando passa o mouse no botão */
+.button:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Estilo para mensagens de erro (vermelho) e sucesso (verde) */
+.status-erro { -fx-text-fill: #e74c3c; -fx-font-weight: bold; }
+.status-sucesso { -fx-text-fill: #27ae60; -fx-font-weight: bold; }
