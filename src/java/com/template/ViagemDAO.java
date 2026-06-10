@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 public class ViagemDAO {
 
+    //Cria um registrador de erros
     private static final Logger logger = Logger.getLogger(ViagemDAO.class.getName());
 
     public void cadastrar(ViagemDTO viagem) {
@@ -23,8 +24,6 @@ public class ViagemDAO {
             ps.setString(5, viagem.getObservacoes());
 
             ps.executeUpdate();
-
-            System.out.println(">> Sucesso: Viagem cadastrada!");
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao cadastrar viagem", e);
@@ -46,8 +45,6 @@ public class ViagemDAO {
             ps.setInt(6, viagem.getId());
 
             ps.executeUpdate();
-
-            System.out.println(">> Sucesso: Viagem alterada!");
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao alterar viagem", e);
@@ -85,8 +82,6 @@ public class ViagemDAO {
     }
 
     public void excluir(int id) {
-
-        System.out.println("Tentando excluir ID: " + id);
         String sql = "DELETE FROM viagem WHERE id = ?";
 
         try (Connection conn = new Conexao().obterConexao();
@@ -95,8 +90,6 @@ public class ViagemDAO {
             ps.setInt(1, id);
 
             ps.executeUpdate();
-
-            System.out.println(">> Sucesso: Viagem excluída!");
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao excluir viagem", e);
