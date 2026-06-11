@@ -6,58 +6,81 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.MainController">
     <children>
-      <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #9abad9;">
+      <Pane prefHeight="535.0" prefWidth="817.0" style="-fx-background-color: #ffffff;">
          <children>
-            <Button fx:id="btnExcluir" layoutX="446.0" layoutY="116.0" mnemonicParsing="false" onAction="#btnExcluirAction" prefHeight="30.0" prefWidth="78.0" style="-fx-background-color: #bf6d3d;" text="Excluir" textFill="WHITE">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1d5d90" height="63.0" layoutX="-1.0" layoutY="-4.0" stroke="#1d5d90" strokeType="INSIDE" width="818.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="186.0" layoutX="37.0" layoutY="79.0" stroke="#1d5d90" strokeType="INSIDE" strokeWidth="0.5" style="-fx-border-radius: 8;" width="539.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="186.0" layoutX="599.0" layoutY="78.0" stroke="#1d5d90" strokeType="INSIDE" strokeWidth="0.5" width="168.0" />
+            <Button fx:id="btnExcluir" layoutX="625.0" layoutY="177.0" mnemonicParsing="false" onAction="#btnExcluirAction" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #eb3a2a;" text="Excluir" textAlignment="CENTER" textFill="WHITE" />
+            <Button fx:id="btnAlterar" layoutX="625.0" layoutY="135.0" mnemonicParsing="false" onAction="#btnAlterarAction" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #177cbf;" text="Alterar" textAlignment="CENTER" textFill="WHITE" />
+              <Button fx:id="btnCadastrar" layoutX="624.0" layoutY="93.0" mnemonicParsing="false" onAction="#btnCadastrarAction" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #0e991e;" text="Cadastrar" textAlignment="CENTER" textFill="WHITE" />
+            <Label layoutX="66.0" layoutY="140.0" text="Destino" textFill="#024b83">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Button>
-            <Button fx:id="btnAlterar" layoutX="446.0" layoutY="76.0" mnemonicParsing="false" onAction="#btnAlterarAction" prefHeight="30.0" prefWidth="78.0" style="-fx-background-color: #bf6d3d;" text="Alterar" textFill="WHITE">
+               </font></Label>
+            <Label layoutX="339.0" layoutY="138.0" text="Preço" textFill="#024b83">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Button>
-              <Button fx:id="btnCadastrar" layoutX="445.0" layoutY="36.0" mnemonicParsing="false" onAction="#btnCadastrarAction" prefHeight="30.0" prefWidth="78.0" style="-fx-background-color: #bf6d3d;" text="Cadastrar" textFill="WHITE">
+               </font></Label>
+            <Label layoutX="66.0" layoutY="199.0" prefHeight="17.0" prefWidth="99.0" text="Data de ida" textFill="#024b83">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Button>
-            <Label layoutX="60.0" layoutY="59.0" text="Destino" />
-            <Label layoutX="270.0" layoutY="59.0" text="Preço" />
-            <Label layoutX="60.0" layoutY="117.0" prefHeight="17.0" prefWidth="99.0" text="Data de ida" />
-            <Label layoutX="145.0" layoutY="117.0" text="Data de volta" />
-            <TextField fx:id="txtDestino" layoutX="60.0" layoutY="79.0" prefHeight="25.0" prefWidth="155.0" style="-fx-background-color: #ffffff;" />
-            <TableView fx:id="tblViagem" layoutX="57.0" layoutY="207.0" onMouseClicked="#carregarCampos" prefHeight="179.0" prefWidth="465.0" style="-fx-background-color: #d6ebff;">
+               </font></Label>
+            <Label layoutX="194.0" layoutY="199.0" text="Data de volta" textFill="#024b83">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <TextField fx:id="txtDestino" layoutX="62.0" layoutY="159.0" prefHeight="30.0" prefWidth="233.0" promptText="      Ex.: Paris, França" style="-fx-background-color: #ffffff; -fx-border-color: #1d5d90; -fx-border-radius: 3; -fx-border-width: 0.5;" />
+            <TableView fx:id="tblViagem" layoutX="36.0" layoutY="336.0" onMouseClicked="#carregarCampos" prefHeight="186.0" prefWidth="732.0" style="-fx-background-color: #d6ebff;">
               <columns>
-                <TableColumn fx:id="colID" prefWidth="41.0" text="ID" />
-                <TableColumn fx:id="colDestino" prefWidth="83.0" text="Destino" />
-                  <TableColumn fx:id="colPreco" prefWidth="68.0" text="Preço" />
-                  <TableColumn fx:id="colDataIda" prefWidth="92.0" text="Data de Ida" />
-                  <TableColumn fx:id="colDataVolta" prefWidth="94.0" text="Data de Volta" />
-                  <TableColumn fx:id="colObservacoes" prefWidth="86.0" text="Observações" />
+                <TableColumn fx:id="colID" prefWidth="46.0" text="ID" />
+                <TableColumn fx:id="colDestino" prefWidth="119.0" text="Destino" />
+                  <TableColumn fx:id="colPreco" prefWidth="87.0" text="Preço" />
+                  <TableColumn fx:id="colDataIda" prefWidth="99.0" text="Data de Ida" />
+                  <TableColumn fx:id="colDataVolta" prefWidth="98.0" text="Data de Volta" />
+                  <TableColumn fx:id="colObservacoes" prefWidth="129.0" text="Observações" />
               </columns>
             </TableView>
-            <TextField fx:id="txtPreco" layoutX="270.0" layoutY="79.0" prefHeight="25.0" prefWidth="149.0" style="-fx-background-color: #ffffff;" />
-            <TextField fx:id="txtObservacoes" layoutX="270.0" layoutY="137.0" style="-fx-background-color: #ffffff;" />
-            <Label layoutX="270.0" layoutY="117.0" prefHeight="17.0" prefWidth="99.0" text="Observações" />
-            <Button fx:id="btnLimpar" layoutX="446.0" layoutY="155.0" mnemonicParsing="false" onAction="#btnLimparAction" prefHeight="30.0" prefWidth="78.0" style="-fx-background-color: #bf6d3d;" text="Limpar" textFill="WHITE">
+            <TextField fx:id="txtPreco" layoutX="337.0" layoutY="159.0" prefHeight="30.0" prefWidth="214.0" style="-fx-background-color: #ffffff; -fx-border-color: #1d5d90; -fx-border-width: 0.5; -fx-border-radius: 3;" text=" R$">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-            <DatePicker fx:id="dtpDataIda" layoutX="60.0" layoutY="137.0" prefHeight="25.0" prefWidth="70.0" />
-            <DatePicker fx:id="dtpDataVolta" layoutX="145.0" layoutY="137.0" prefHeight="25.0" prefWidth="70.0" />
-            <Label layoutX="60.0" layoutY="16.0" text="Cadastro de Viagens" textFill="WHITE">
+               </font></TextField>
+            <TextField fx:id="txtObservacoes" layoutX="337.0" layoutY="219.0" prefHeight="26.0" prefWidth="214.0" style="-fx-background-color: #ffffff; -fx-border-color: #1d5d90; -fx-border-radius: 3; -fx-border-width: 0.5;" />
+            <Label layoutX="341.0" layoutY="199.0" prefHeight="17.0" prefWidth="99.0" text="Observações" textFill="#024b83">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="System Bold" size="12.0" />
+               </font></Label>
+            <Button fx:id="btnLimpar" layoutX="625.0" layoutY="217.0" mnemonicParsing="false" onAction="#btnLimparAction" prefHeight="30.0" prefWidth="118.0" style="-fx-background-color: #ebae2a;" text="Limpar" textAlignment="CENTER" textFill="WHITE" />
+            <DatePicker fx:id="dtpDataIda" layoutX="62.0" layoutY="219.0" prefHeight="26.0" prefWidth="106.0" />
+            <DatePicker fx:id="dtpDataVolta" layoutX="196.0" layoutY="219.0" prefHeight="26.0" prefWidth="99.0" />
+            <Label layoutX="81.0" layoutY="9.0" prefHeight="44.0" prefWidth="275.0" text="Sistema de Viagens" textFill="WHITE">
+               <font>
+                  <Font name="Candara Bold" size="29.0" />
                </font>
             </Label>
-            <Label fx:id="lblStatus" layoutX="271.0" layoutY="176.0" prefHeight="18.0" prefWidth="152.0" />
-            <TextField fx:id="txtPesquisa" layoutX="54.0" layoutY="177.0" text="Pesquisar destino..." />
+            <Label fx:id="lblStatus" layoutX="36.0" layoutY="274.0" prefHeight="26.0" prefWidth="346.0" />
+            <TextField fx:id="txtPesquisa" layoutX="40.0" layoutY="304.0" text="Pesquisar destino..." />
+            <ImageView fitHeight="44.0" fitWidth="45.0" layoutX="22.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../Downloads/White_plane_icon.svg.png" />
+               </image>
+            </ImageView>
+            <Line endX="389.0" layoutX="161.0" layoutY="123.0" startX="-100.0" stroke="#024b83" strokeWidth="0.5" />
+            <Label layoutX="102.0" layoutY="92.0" text="Dados da Viagem" textFill="#024b83">
+               <font>
+                  <Font name="Candara Bold" size="21.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
     </children>
