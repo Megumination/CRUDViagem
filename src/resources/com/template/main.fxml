@@ -51,7 +51,7 @@
                   <TableColumn fx:id="colObservacoes" prefWidth="129.0" text="Observações" />
               </columns>
             </TableView>
-            <TextField fx:id="txtPreco" layoutX="337.0" layoutY="159.0" prefHeight="30.0" prefWidth="214.0" style="-fx-background-color: #ffffff; -fx-border-color: #1d5d90; -fx-border-width: 0.5; -fx-border-radius: 3;" text=" R$">
+            <TextField fx:id="txtPreco" layoutX="337.0" layoutY="159.0" prefHeight="30.0" prefWidth="214.0" style="-fx-background-color: #ffffff; -fx-border-color: #1d5d90; -fx-border-width: 0.5; -fx-border-radius: 3;">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font></TextField>
