@@ -1,9 +1,13 @@
-package com.template;
+package com.template.model.dao;
+
+import com.template.model.Conexao;
+import com.template.model.dto.ViagemDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static com.template.util.DialogUtil.*;
 
 public class ViagemDAO {
 
@@ -93,6 +97,8 @@ public class ViagemDAO {
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao excluir viagem", e);
+
+            showWarning("Erro ao excluir a viagem.");
         }
     }
 }

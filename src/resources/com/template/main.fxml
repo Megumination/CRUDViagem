@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.MainController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.controller.MainController">
     <children>
       <Pane prefHeight="535.0" prefWidth="817.0" style="-fx-background-color: #ffffff;">
          <children>
@@ -44,11 +44,11 @@
             <TableView fx:id="tblViagem" layoutX="36.0" layoutY="336.0" onMouseClicked="#carregarCampos" prefHeight="186.0" prefWidth="732.0" style="-fx-background-color: #d6ebff;">
               <columns>
                 <TableColumn fx:id="colID" prefWidth="46.0" text="ID" />
-                <TableColumn fx:id="colDestino" prefWidth="119.0" text="Destino" />
-                  <TableColumn fx:id="colPreco" prefWidth="87.0" text="Preço" />
-                  <TableColumn fx:id="colDataIda" prefWidth="99.0" text="Data de Ida" />
-                  <TableColumn fx:id="colDataVolta" prefWidth="98.0" text="Data de Volta" />
-                  <TableColumn fx:id="colObservacoes" prefWidth="129.0" text="Observações" />
+                <TableColumn fx:id="colDestino" prefWidth="128.0" text="Destino" />
+                  <TableColumn fx:id="colPreco" prefWidth="96.0" text="Preço" />
+                  <TableColumn fx:id="colDataIda" prefWidth="107.0" text="Data de Ida" />
+                  <TableColumn fx:id="colDataVolta" prefWidth="125.0" text="Data de Volta" />
+                  <TableColumn fx:id="colObservacoes" prefWidth="229.0" text="Observações" />
               </columns>
             </TableView>
             <TextField fx:id="txtPreco" layoutX="337.0" layoutY="159.0" prefHeight="30.0" prefWidth="214.0" style="-fx-background-color: #ffffff; -fx-border-color: #1d5d90; -fx-border-width: 0.5; -fx-border-radius: 3;">
