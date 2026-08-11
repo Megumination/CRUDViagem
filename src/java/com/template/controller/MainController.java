@@ -14,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import com.template.validator.ViagemValidator;
+
 public class MainController {
 
     @FXML
@@ -74,23 +76,23 @@ public class MainController {
     @FXML
     private void btnCadastrarAction(ActionEvent event) {
 
-        if (txtDestino.getText().trim().isEmpty()) {
-            mostrarMensagem("O destino é obrigatório!", false);
-            return;
+        Date dataIda = null;
+        Date dataVolta = null;
+
+        if (dtpDataIda.getValue() != null) {
+            dataIda = java.sql.Date.valueOf(dtpDataIda.getValue());
         }
 
-        if (txtPreco.getText().trim().isEmpty()) {
-            mostrarMensagem("O preço é obrigatório!", false);
-            return;
+        if (dtpDataVolta.getValue() != null) {
+            dataVolta = java.sql.Date.valueOf(dtpDataVolta.getValue());
         }
 
-        if (dtpDataIda.getValue() == null) {
-            mostrarMensagem("Informe a data de ida!", false);
-            return;
-        }
-
-        if (dtpDataVolta.getValue() == null) {
-            mostrarMensagem("Informe a data de volta!", false);
+        if (!ViagemValidator.validarViagem(
+                txtDestino.getText(),
+                txtPreco.getText(),
+                dataIda,
+                dataVolta,
+                txtObservacoes.getText())) {
             return;
         }
 
@@ -98,8 +100,8 @@ public class MainController {
 
         novaViagem.setDestino(txtDestino.getText());
         novaViagem.setPreco(Double.parseDouble(txtPreco.getText()));
-        novaViagem.setDataIda(java.sql.Date.valueOf(dtpDataIda.getValue()));
-        novaViagem.setDataVolta(java.sql.Date.valueOf(dtpDataVolta.getValue()));
+        novaViagem.setDataIda(dataIda);
+        novaViagem.setDataVolta(dataVolta);
         novaViagem.setObservacoes(txtObservacoes.getText());
 
         ViagemDAO viagemDAO = new ViagemDAO();
@@ -116,22 +118,44 @@ public class MainController {
 
         ViagemDTO viagem = tblViagem.getSelectionModel().getSelectedItem();
 
-        if (viagem != null) {
-
-            viagem.setDestino(txtDestino.getText());
-            viagem.setPreco(Double.parseDouble(txtPreco.getText()));
-            viagem.setDataIda(java.sql.Date.valueOf(dtpDataIda.getValue()));
-            viagem.setDataVolta(java.sql.Date.valueOf(dtpDataVolta.getValue()));
-            viagem.setObservacoes(txtObservacoes.getText());
-
-            ViagemDAO viagemDAO = new ViagemDAO();
-            viagemDAO.alterar(viagem);
-
-            mostrarMensagem("Viagem alterada com sucesso!", true);
-
-            carregarViagem();
-            limparCampos();
+        if (viagem == null) {
+            mostrarMensagem("Selecione uma viagem para alterar!", false);
+            return;
         }
+
+        Date dataIda = null;
+        Date dataVolta = null;
+
+        if (dtpDataIda.getValue() != null) {
+            dataIda = java.sql.Date.valueOf(dtpDataIda.getValue());
+        }
+
+        if (dtpDataVolta.getValue() != null) {
+            dataVolta = java.sql.Date.valueOf(dtpDataVolta.getValue());
+        }
+
+        if (!ViagemValidator.validarViagem(
+                txtDestino.getText(),
+                txtPreco.getText(),
+                dataIda,
+                dataVolta,
+                txtObservacoes.getText())) {
+            return;
+        }
+
+        viagem.setDestino(txtDestino.getText());
+        viagem.setPreco(Double.parseDouble(txtPreco.getText()));
+        viagem.setDataIda(dataIda);
+        viagem.setDataVolta(dataVolta);
+        viagem.setObservacoes(txtObservacoes.getText());
+
+        ViagemDAO viagemDAO = new ViagemDAO();
+        viagemDAO.alterar(viagem);
+
+        mostrarMensagem("Viagem alterada com sucesso!", true);
+
+        carregarViagem();
+        limparCampos();
     }
 
     @FXML
