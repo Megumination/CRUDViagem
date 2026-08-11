@@ -1,20 +1,24 @@
 package com.template.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 
-import com.template.model.dao.ViagemDAO;
 import com.template.model.dto.ViagemDTO;
+import com.template.service.ViagemService;
+import com.template.validator.ViagemValidator;
 
-import static com.template.util.DialogUtil.*;
+import static com.template.util.DialogUtil.showConfirmation;
 
 import javafx.collections.FXCollections;
-import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-
-import com.template.validator.ViagemValidator;
 
 public class MainController {
 
@@ -72,6 +76,8 @@ public class MainController {
     @FXML
     private TableColumn<ViagemDTO, String> colObservacoes;
 
+    private ViagemService viagemService = new ViagemService();
+
 
     @FXML
     private void btnCadastrarAction(ActionEvent event) {
@@ -104,14 +110,14 @@ public class MainController {
         novaViagem.setDataVolta(dataVolta);
         novaViagem.setObservacoes(txtObservacoes.getText());
 
-        ViagemDAO viagemDAO = new ViagemDAO();
-        viagemDAO.cadastrar(novaViagem);
+        viagemService.cadastrar(novaViagem);
 
         mostrarMensagem("Viagem cadastrada com sucesso!", true);
 
         carregarViagem();
         limparCampos();
     }
+
 
     @FXML
     private void btnAlterarAction(ActionEvent event) {
@@ -149,8 +155,7 @@ public class MainController {
         viagem.setDataVolta(dataVolta);
         viagem.setObservacoes(txtObservacoes.getText());
 
-        ViagemDAO viagemDAO = new ViagemDAO();
-        viagemDAO.alterar(viagem);
+        viagemService.alterar(viagem);
 
         mostrarMensagem("Viagem alterada com sucesso!", true);
 
@@ -158,8 +163,10 @@ public class MainController {
         limparCampos();
     }
 
+
     @FXML
     private void btnExcluirAction(ActionEvent event) {
+
         ViagemDTO viagem = tblViagem.getSelectionModel().getSelectedItem();
 
         if (viagem == null) {
@@ -168,10 +175,10 @@ public class MainController {
         }
 
         if (showConfirmation(
-                "Deseja realmente excluir a viagem para " + viagem.getDestino() + "?")) {
+                "Deseja realmente excluir a viagem para "
+                        + viagem.getDestino() + "?")) {
 
-            ViagemDAO viagemDAO = new ViagemDAO();
-            viagemDAO.excluir(viagem.getId());
+            viagemService.excluir(viagem.getId());
 
             mostrarMensagem("Viagem excluída com sucesso!", true);
 
@@ -180,44 +187,43 @@ public class MainController {
         }
     }
 
+
     @FXML
     private void btnLimparAction(ActionEvent event) {
         limparCampos();
     }
 
+
     private void limparCampos() {
 
         txtDestino.clear();
         txtPreco.clear();
-        // Remove as datas selecionadas dos DatePickers
         dtpDataIda.setValue(null);
         dtpDataVolta.setValue(null);
-
         txtObservacoes.clear();
     }
+
 
     @FXML
     private void carregarViagem() {
 
-        ViagemDAO viagemDAO = new ViagemDAO();
+        ArrayList<ViagemDTO> listaViagens = viagemService.listar();
 
-        // Busca todas as viagens cadastradas no banco
-        ArrayList<ViagemDTO> listaViagens = viagemDAO.listarViagem();
-
-        // Converte a ArrayList para ObservableList para exibir na TableView
         tblViagem.setItems(
                 FXCollections.observableArrayList(listaViagens)
         );
     }
 
+
     @FXML
     private void initialize() {
+
         tblViagem.getSelectionModel().setCellSelectionEnabled(false);
 
-        // Permite selecionar apenas uma linha da tabela por vez
-        tblViagem.getSelectionModel().setSelectionMode(javafx.scene.control.SelectionMode.SINGLE);
+        tblViagem.getSelectionModel().setSelectionMode(
+                javafx.scene.control.SelectionMode.SINGLE
+        );
 
-        // Liga cada coluna ao atributo correspondente do DTO
         colID.setCellValueFactory(new PropertyValueFactory<>("id"));
         colDestino.setCellValueFactory(new PropertyValueFactory<>("destino"));
         colPreco.setCellValueFactory(new PropertyValueFactory<>("preco"));
@@ -225,14 +231,14 @@ public class MainController {
         colDataVolta.setCellValueFactory(new PropertyValueFactory<>("dataVolta"));
         colObservacoes.setCellValueFactory(new PropertyValueFactory<>("observacoes"));
 
-        //impede que o usuário digite qualquer coisa que não seja número ou ponto
+        // Impede que o usuário digite letras no campo de preço
         txtPreco.textProperty().addListener((obs, antigo, novo) -> {
             if (!novo.matches("\\d*(\\.\\d*)?")) {
                 txtPreco.setText(antigo);
             }
         });
 
-        // Atualiza os campos automaticamente ao selecionar uma linha
+        // Atualiza os campos ao selecionar uma viagem
         tblViagem.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, viagem) -> {
 
@@ -243,11 +249,15 @@ public class MainController {
                         txtObservacoes.setText(viagem.getObservacoes());
 
                         dtpDataIda.setValue(
-                                new java.sql.Date(viagem.getDataIda().getTime()).toLocalDate()
+                                new java.sql.Date(
+                                        viagem.getDataIda().getTime()
+                                ).toLocalDate()
                         );
 
                         dtpDataVolta.setValue(
-                                new java.sql.Date(viagem.getDataVolta().getTime()).toLocalDate()
+                                new java.sql.Date(
+                                        viagem.getDataVolta().getTime()
+                                ).toLocalDate()
                         );
                     }
                 }
@@ -256,11 +266,16 @@ public class MainController {
         carregarViagem();
     }
 
+
     private void mostrarMensagem(String texto, boolean isSucesso) {
 
-        // avisa o usuário se deu certo ou errado
         lblStatus.setText(texto);
-        lblStatus.getStyleClass().removeAll("status-erro", "status-sucesso");
+
+        lblStatus.getStyleClass().removeAll(
+                "status-erro",
+                "status-sucesso"
+        );
+
         if (isSucesso) {
             lblStatus.getStyleClass().add("status-sucesso");
         } else {
@@ -268,11 +283,12 @@ public class MainController {
         }
     }
 
+
     @FXML
     private void carregarCampos() {
 
-        // Pega a viagem selecionada na tabela
-        ViagemDTO viagemSelecionada = tblViagem.getSelectionModel().getSelectedItem();
+        ViagemDTO viagemSelecionada =
+                tblViagem.getSelectionModel().getSelectedItem();
 
         if (viagemSelecionada != null) {
 
@@ -281,13 +297,16 @@ public class MainController {
             txtObservacoes.setText(viagemSelecionada.getObservacoes());
 
             dtpDataIda.setValue(
-                    new java.sql.Date(viagemSelecionada.getDataIda().getTime()).toLocalDate()
+                    new java.sql.Date(
+                            viagemSelecionada.getDataIda().getTime()
+                    ).toLocalDate()
             );
 
             dtpDataVolta.setValue(
-                    new java.sql.Date(viagemSelecionada.getDataVolta().getTime()).toLocalDate()
+                    new java.sql.Date(
+                            viagemSelecionada.getDataVolta().getTime()
+                    ).toLocalDate()
             );
         }
     }
 }
-

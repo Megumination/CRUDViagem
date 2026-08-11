@@ -7,11 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import static com.template.util.DialogUtil.*;
 
 public class ViagemDAO {
 
-    //Cria um registrador de erros
+    // Cria um registrador de erros
     private static final Logger logger = Logger.getLogger(ViagemDAO.class.getName());
 
     public void cadastrar(ViagemDTO viagem) {
@@ -31,6 +32,7 @@ public class ViagemDAO {
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao cadastrar viagem", e);
+            showError("Erro ao cadastrar a viagem.");
         }
     }
 
@@ -52,6 +54,7 @@ public class ViagemDAO {
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao alterar viagem", e);
+            showError("Erro ao alterar a viagem.");
         }
     }
 
@@ -80,12 +83,14 @@ public class ViagemDAO {
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao listar viagens", e);
+            showError("Erro ao listar as viagens.");
         }
 
         return lista;
     }
 
     public void excluir(int id) {
+
         String sql = "DELETE FROM viagem WHERE id = ?";
 
         try (Connection conn = new Conexao().obterConexao();
@@ -97,8 +102,7 @@ public class ViagemDAO {
 
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Erro ao excluir viagem", e);
-
-            showWarning("Erro ao excluir a viagem.");
+            showError("Erro ao excluir a viagem.");
         }
     }
 }
