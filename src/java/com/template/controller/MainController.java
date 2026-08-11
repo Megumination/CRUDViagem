@@ -1,10 +1,11 @@
 package com.template.controller;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.template.model.dto.ViagemDTO;
 import com.template.service.ViagemService;
+import com.template.util.DateUtil;
 import com.template.validator.ViagemValidator;
 
 import static com.template.util.DialogUtil.showConfirmation;
@@ -76,22 +77,14 @@ public class MainController {
     @FXML
     private TableColumn<ViagemDTO, String> colObservacoes;
 
-    private ViagemService viagemService = new ViagemService();
+    private final ViagemService viagemService = new ViagemService();
 
 
     @FXML
     private void btnCadastrarAction(ActionEvent event) {
 
-        Date dataIda = null;
-        Date dataVolta = null;
-
-        if (dtpDataIda.getValue() != null) {
-            dataIda = java.sql.Date.valueOf(dtpDataIda.getValue());
-        }
-
-        if (dtpDataVolta.getValue() != null) {
-            dataVolta = java.sql.Date.valueOf(dtpDataVolta.getValue());
-        }
+        Date dataIda = DateUtil.converterParaDate(dtpDataIda.getValue());
+        Date dataVolta = DateUtil.converterParaDate(dtpDataVolta.getValue());
 
         if (!ViagemValidator.validarViagem(
                 txtDestino.getText(),
@@ -129,16 +122,8 @@ public class MainController {
             return;
         }
 
-        Date dataIda = null;
-        Date dataVolta = null;
-
-        if (dtpDataIda.getValue() != null) {
-            dataIda = java.sql.Date.valueOf(dtpDataIda.getValue());
-        }
-
-        if (dtpDataVolta.getValue() != null) {
-            dataVolta = java.sql.Date.valueOf(dtpDataVolta.getValue());
-        }
+        Date dataIda = DateUtil.converterParaDate(dtpDataIda.getValue());
+        Date dataVolta = DateUtil.converterParaDate(dtpDataVolta.getValue());
 
         if (!ViagemValidator.validarViagem(
                 txtDestino.getText(),
@@ -238,7 +223,7 @@ public class MainController {
             }
         });
 
-        // Atualiza os campos ao selecionar uma viagem
+        // Carrega os dados da viagem selecionada nos campos
         tblViagem.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, viagem) -> {
 
@@ -249,15 +234,15 @@ public class MainController {
                         txtObservacoes.setText(viagem.getObservacoes());
 
                         dtpDataIda.setValue(
-                                new java.sql.Date(
-                                        viagem.getDataIda().getTime()
-                                ).toLocalDate()
+                                DateUtil.converterParaLocalDate(
+                                        (java.sql.Date) viagem.getDataIda()
+                                )
                         );
 
                         dtpDataVolta.setValue(
-                                new java.sql.Date(
-                                        viagem.getDataVolta().getTime()
-                                ).toLocalDate()
+                                DateUtil.converterParaLocalDate(
+                                        (java.sql.Date) viagem.getDataVolta()
+                                )
                         );
                     }
                 }
@@ -280,33 +265,6 @@ public class MainController {
             lblStatus.getStyleClass().add("status-sucesso");
         } else {
             lblStatus.getStyleClass().add("status-erro");
-        }
-    }
-
-
-    @FXML
-    private void carregarCampos() {
-
-        ViagemDTO viagemSelecionada =
-                tblViagem.getSelectionModel().getSelectedItem();
-
-        if (viagemSelecionada != null) {
-
-            txtDestino.setText(viagemSelecionada.getDestino());
-            txtPreco.setText(String.valueOf(viagemSelecionada.getPreco()));
-            txtObservacoes.setText(viagemSelecionada.getObservacoes());
-
-            dtpDataIda.setValue(
-                    new java.sql.Date(
-                            viagemSelecionada.getDataIda().getTime()
-                    ).toLocalDate()
-            );
-
-            dtpDataVolta.setValue(
-                    new java.sql.Date(
-                            viagemSelecionada.getDataVolta().getTime()
-                    ).toLocalDate()
-            );
         }
     }
 }

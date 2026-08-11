@@ -7,7 +7,7 @@ import com.template.model.dto.ViagemDTO;
 
 public class ViagemService {
 
-    private ViagemDAO viagemDAO = new ViagemDAO();
+    private final ViagemDAO viagemDAO = new ViagemDAO();
 
     public void cadastrar(ViagemDTO viagem) {
         viagemDAO.cadastrar(viagem);
