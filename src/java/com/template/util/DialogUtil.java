@@ -29,4 +29,12 @@ public class DialogUtil {
         alerta.setContentText(mensagem);
         alerta.showAndWait();
     }
+
+    public static void showError(String mensagem) {
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setTitle("Erro");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensagem);
+        alerta.showAndWait();
+    }
 }
