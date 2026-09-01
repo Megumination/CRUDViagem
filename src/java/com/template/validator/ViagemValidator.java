@@ -1,93 +1,137 @@
 package com.template.validator;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static com.template.util.DialogUtil.showWarning;
 
-public class ViagemValidator {
+public class ViagemValidator implements IViagemValidator {
 
-    public static boolean validarViagem(
+    @Override
+    public boolean validarViagem(
             String destino,
             String preco,
-            Date data_ida,
-            Date data_volta,
+            Date dataIda,
+            Date dataVolta,
             String observacoes) {
 
-        // Lista de validadores
-        List<Validador<String>> validadores = new ArrayList<>();
-
         // Validação do destino
-        validadores.add(
-                new CampoObrigatorioValidador("Destino", destino)
-        );
+        if (!validarDestino(destino)) {
+
+            if (destino == null || destino.trim().isEmpty()) {
+                showWarning("O campo Destino deve ser preenchido.");
+            } else {
+                showWarning("O destino deve ter pelo menos 3 caracteres!");
+            }
+
+            return false;
+        }
 
         // Validação do preço
-        validadores.add(
-                new CampoObrigatorioValidador("Preco", preco)
-        );
+        if (!validarPreco(preco)) {
 
-        // Percorre os validadores
-        for (Validador<String> validador : validadores) {
+            if (preco == null || preco.trim().isEmpty()) {
+                showWarning("O campo Preco deve ser preenchido.");
+            } else {
+                try {
+                    double valor = Double.parseDouble(preco);
 
-            if (!validador.validar(validador.getValor())) {
-                showWarning(validador.getMensagemErro());
-                return false;
+                    if (valor <= 0) {
+                        showWarning("O preco deve ser maior que zero!");
+                    }
+
+                } catch (NumberFormatException e) {
+                    showWarning("Digite um preço valido!");
+                }
             }
-        }
 
-        // O destino deve ter pelo menos 3 caracteres
-        if (destino.trim().length() < 3) {
-            showWarning("O destino deve ter pelo menos 3 caracteres!");
             return false;
         }
 
-        // O preço precisa ser um número válido
-        double valor;
-
-        try {
-            valor = Double.parseDouble(preco);
-        } catch (NumberFormatException e) {
-            showWarning("Digite um preco valido!");
-            return false;
-        }
-
-        // O preço deve ser maior que zero
-        if (valor <= 0) {
-            showWarning("O preço deve ser maior que zero!");
-            return false;
-        }
-
-        // Data de ida obrigatória
-        if (data_ida == null) {
+        // Validação da data de ida
+        if (!validarDataIda(dataIda)) {
             showWarning("Digite uma data de ida!");
             return false;
         }
 
-        // Data de volta obrigatória
-        if (data_volta == null) {
+        // Validação da data de volta
+        if (!validarDataVolta(dataVolta)) {
             showWarning("Digite uma data de volta!");
             return false;
         }
 
-        // A data de volta não pode ser anterior à data de ida
-        if (data_volta.before(data_ida)) {
+        // Validação das datas
+        if (!validarDatas(dataIda, dataVolta)) {
             showWarning(
                     "A data de volta nao pode ser anterior a data de ida!"
             );
             return false;
         }
 
-        // Observações podem ser vazias, mas não podem passar de 500 caracteres
-        if (observacoes != null && observacoes.length() > 500) {
+        // Validação das observações
+        if (!validarObservacoes(observacoes)) {
             showWarning(
                     "As observacoes devem ter no maximo 500 caracteres!"
             );
             return false;
         }
 
-        // Todas as validações foram aprovadas
         return true;
+    }
+
+    @Override
+    public boolean validarDestino(String destino) {
+
+        if (destino == null || destino.trim().isEmpty()) {
+            return false;
+        }
+
+        return destino.trim().length() >= 3;
+    }
+
+    @Override
+    public boolean validarPreco(String preco) {
+
+        if (preco == null || preco.trim().isEmpty()) {
+            return false;
+        }
+
+        try {
+            double valor = Double.parseDouble(preco);
+
+            return valor > 0;
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean validarDataIda(Date dataIda) {
+        return dataIda != null;
+    }
+
+    @Override
+    public boolean validarDataVolta(Date dataVolta) {
+        return dataVolta != null;
+    }
+
+    @Override
+    public boolean validarDatas(Date dataIda, Date dataVolta) {
+
+        if (dataIda == null || dataVolta == null) {
+            return false;
+        }
+
+        return !dataVolta.before(dataIda);
+    }
+
+    @Override
+    public boolean validarObservacoes(String observacoes) {
+
+        if (observacoes == null) {
+            return true;
+        }
+
+        return observacoes.length() <= 500;
     }
 }
