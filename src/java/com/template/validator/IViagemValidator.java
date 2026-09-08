@@ -11,16 +11,4 @@ public interface IViagemValidator {
             Date dataVolta,
             String observacoes
     );
-
-    boolean validarDestino(String destino);
-
-    boolean validarPreco(String preco);
-
-    boolean validarDataIda(Date dataIda);
-
-    boolean validarDataVolta(Date dataVolta);
-
-    boolean validarDatas(Date dataIda, Date dataVolta);
-
-    boolean validarObservacoes(String observacoes);
 }
